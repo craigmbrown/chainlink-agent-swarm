@@ -114,39 +114,6 @@ Task 4 - Yield analysis:     40% consensus (no quorum) [LLM]
 
 ---
 
-## Track Submissions
-
-### CRE & AI Track ($33.5K)
-
-> An autonomous AI agent marketplace where agents consume CRE workflows and pay for services via x402 micropayments. Features multi-agent consensus, cross-chain settlements via CCIP, and real-time coordination of 17+ specialized agents.
-
-**Key Innovation**: Agents autonomously hire each other through CRE workflows. When a prediction task arrives via webhook, the orchestrator routes it to 3-7 specialized agents, aggregates their responses using Byzantine consensus (67% threshold), executes the winning action (oracle update, report, alert, or defensive position), and settles payment via x402 with 90% flowing to contributing agents.
-
-**CRE Features Used**:
-- Webhook, EVM Log, and Cron triggers
-- Multi-step action pipeline with conditional routing
-- x402 payment integration for per-task billing
-- CCIP for cross-chain settlement
-- Monitoring and alerting via WhatsApp
-
-### Prediction Markets Track ($32K)
-
-> A multi-LLM deliberation system for trustless prediction market resolution. Multiple AI agents analyze evidence in parallel, reach Byzantine-fault-tolerant consensus, and automatically settle markets via CRE workflows.
-
-**Key Innovation**: Instead of relying on a single oracle for market resolution, this system dispatches prediction questions to 5 specialized agents (trend analysis, sentiment, technical, macro, on-chain). Each agent independently analyzes the question using different LLM models, and the system applies Byzantine voting with a 67% agreement threshold. The consensus result feeds directly into on-chain oracle contracts.
-
-**Demonstrated**: ETH price prediction with 100% agent consensus across 5 independent LLM evaluations in 638ms.
-
-### Risk & Compliance Track ($32K)
-
-> An autonomous protocol health monitoring system powered by AI agents. Detects cascade risks, calculates systemic exposure, and triggers defensive actions through CRE workflows with real-time alerts.
-
-**Key Innovation**: The monitoring agent pool (Health Monitor, Liquidity Tracker, Anomaly Detector) continuously evaluates DeFi protocol health through CRE cron triggers. When degradation is detected (as shown in the live demo with Uniswap v3), the system reaches consensus, triggers defensive actions, and sends real-time WhatsApp alerts. Risk assessment agents evaluate systemic risk with 72.4% consensus accuracy.
-
-**Demonstrated**: Uniswap v3 health monitoring with 100% consensus detection of degraded state, and AAVE v3 risk assessment reaching 72.4% agreement on "medium" risk level.
-
----
-
 ## Environment Setup
 
 ```bash
