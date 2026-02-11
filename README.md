@@ -112,6 +112,150 @@ Task 4 - Yield analysis:     40% consensus (no quorum) [LLM]
 - **Data Feeds**: Oracle price feeds consumed by prediction agents
 - **Functions**: Serverless compute for agent execution
 
+## CRE Workflow Detail
+
+**Spec**: `cre-workflows/agent_swarm_orchestrator_v1.yaml`
+
+```
+                        ┌──────────────────────────────────────┐
+                        │         TRIGGER LAYER                │
+                        │                                      │
+                        │  WEBHOOK ──┐                         │
+                        │  POST /api/v1/tasks                  │
+                        │  Auth: x402_payment_header           │
+                        │  Schema: {task_type, query,   ──┐    │
+                        │           requester_address,    │    │
+                        │           budget_link}          │    │
+                        │                                 │    │
+                        │  EVM_LOG ──┐                    │    │
+                        │  TaskSubmitted(requester, ──────┤    │
+                        │    taskId, budget)              │    │
+                        │  chain: base                    │    │
+                        │                                 │    │
+                        │  CRON ─────┐                    │    │
+                        │  0 * * * * (hourly) ────────────┘    │
+                        └─────────────────┬────────────────────┘
+                                          │
+                        ┌─────────────────▼────────────────────┐
+                        │  [1] receive_task                    │
+                        │      type: compute (python3)         │
+                        │      → parse payload                 │
+                        │      → classify task_type            │
+                        │      → validate budget               │
+                        │      output: task_context             │
+                        └─────────────────┬────────────────────┘
+                                          │
+                        ┌─────────────────▼────────────────────┐
+                        │  [2] route_to_agents                 │
+                        │      type: compute (parallel)        │
+                        │      strategy: expertise_match       │
+                        │      agents: 3-7 per task            │
+                        │      timeout: 30s                    │
+                        │                                      │
+                        │   ┌─────┐ ┌─────┐ ┌─────┐ ... ┌───┐ │
+                        │   │ LLM │ │ LLM │ │ LLM │     │LLM│ │
+                        │   │Agent│ │Agent│ │Agent│     │Ag.│ │
+                        │   │  1  │ │  2  │ │  3  │     │ N │ │
+                        │   └──┬──┘ └──┬──┘ └──┬──┘     └─┬─┘ │
+                        │      └───────┼───────┼──────────┘    │
+                        │      output: agent_responses         │
+                        └─────────────────┬────────────────────┘
+                                          │
+                        ┌─────────────────▼────────────────────┐
+                        │  [3] aggregate_consensus             │
+                        │      type: compute                   │
+                        │      method: byzantine_vote          │
+                        │      threshold: 67%                  │
+                        │      weighting: expertise            │
+                        │                                      │
+                        │      output:                         │
+                        │        consensus_result              │
+                        │        confidence_score              │
+                        │        agreement_ratio               │
+                        │        dissenting_agents             │
+                        │        consensus_reached (bool)      │
+                        └─────────────────┬────────────────────┘
+                                          │
+                        ┌─────────────────▼────────────────────┐
+                        │  [4] execute_action                  │
+                        │      type: conditional               │
+                        │                                      │
+                        │  ┌─────────────┬──────────┬────────┐ │
+                        │  │ prediction  │ analysis │monitor.│ │
+                        │  │             │          │        │ │
+                        │  ▼             ▼          ▼        ▼ │
+                        │ update_      publish_   send_    trigger_ │
+                        │ oracle       report     alert   defensive │
+                        │                                      │
+                        │ evm_write    compute    webhook  evm_write│
+                        │ updatePre-   format →   POST to  execute- │
+                        │ diction()    IPFS       WhatsApp Defense() │
+                        │ chain:base              API      chain:base│
+                        │ gas:200K                                  │
+                        └─────────────────┬────────────────────┘
+                                          │
+                        ┌─────────────────▼────────────────────┐
+                        │  [5] settle_payment                  │
+                        │      type: x402_payment              │
+                        │      currency: LINK                  │
+                        │                                      │
+                        │      charge: requester → budget_link │
+                        │      splits:                         │
+                        │        ├─ 90% → contributing_agents  │
+                        │        │       (weighted_by_confidence)│
+                        │        └─ 10% → protocol_treasury    │
+                        │                                      │
+                        │      output: payment_receipt         │
+                        └─────────────────┬────────────────────┘
+                                          │
+                        ┌─────────────────▼────────────────────┐
+                        │  [6] ccip_settlement                 │
+                        │      type: ccip_transfer             │
+                        │      enabled: {{config.ccip_enabled}}│
+                        │                                      │
+                        │      source: base                    │
+                        │      dest:   ethereum                │
+                        │      token:  LINK                    │
+                        │      amount: protocol_fee            │
+                        │      receiver: TREASURY_ADDRESS      │
+                        └──────────────────────────────────────┘
+
+ERROR HANDLING                          MONITORING
+┌────────────────────────┐  ┌─────────────────────────────────┐
+│ consensus_failed:      │  │ Metrics:                        │
+│   → refund_requester   │  │   tasks_processed               │
+│   → send_alert         │  │   consensus_success_rate        │
+│                        │  │   average_response_time         │
+│ payment_failed:        │  │   revenue_generated             │
+│   → retry_with_backoff │  │   agent_utilization             │
+│   → max_retries: 3     │  │                                 │
+│                        │  │ Alerts:                         │
+│ agent_timeout:         │  │   consensus < 80% → send_alert  │
+│   → fallback_to_cached │  │   latency > 10s   → scale_agents│
+│   → log_warning        │  │                                 │
+└────────────────────────┘  └─────────────────────────────────┘
+```
+
+### Workflow Config
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `consensus_threshold` | 0.67 | Minimum agreement for Byzantine vote to pass |
+| `min_agents_per_task` | 3 | Minimum agents consulted per task |
+| `max_agents_per_task` | 7 | Maximum agents consulted per task |
+| `payment_currency` | LINK | x402 payment denomination |
+| `default_chain` | base | Primary settlement chain |
+| `ccip_enabled` | true | Cross-chain settlement active |
+
+### Conditional Routing (Step 4)
+
+| Task Type | Action | Handler | Target |
+|-----------|--------|---------|--------|
+| `prediction` | `update_oracle` | `evm_write` | OracleSubscription.updatePrediction() |
+| `analysis` | `publish_report` | `compute` | Format report, store to IPFS |
+| `monitoring` | `send_alert` | `webhook_call` | WhatsApp API POST |
+| `risk_assessment` | `trigger_defensive_action` | `evm_write` | RiskManager.executeDefensiveAction() |
+
 ## On-Chain Deployment Verification
 
 All contracts compiled with Foundry (Solidity 0.8.20, optimizer 200 runs) and deployed via `forge script` broadcast. Full transaction log in `contracts/broadcast/`.
