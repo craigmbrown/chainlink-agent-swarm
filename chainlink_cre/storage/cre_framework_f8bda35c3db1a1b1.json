@@ -1,0 +1,256 @@
+{
+  "framework_info": {
+    "framework_id": "f8bda35c3db1a1b1",
+    "initialized_at": "2025-11-30T03:42:32.871182",
+    "agent_id": "cfff3328f5150995"
+  },
+  "workflows": {
+    "cre_price_analysis_v1": {
+      "workflow_id": "cre_price_analysis_v1",
+      "name": "AI Price Analysis Workflow",
+      "description": "LLM-powered crypto price analysis with sentiment integration",
+      "category": "prediction",
+      "version": "1.0",
+      "ai_models_required": [
+        "gpt-4",
+        "sentiment_analyzer_v2"
+      ],
+      "chainlink_feeds_required": [
+        "BTC/USD",
+        "ETH/USD",
+        "LINK/USD"
+      ],
+      "input_schema": {
+        "symbol": {
+          "type": "string",
+          "required": true
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": [
+            "1h",
+            "4h",
+            "1d"
+          ],
+          "default": "4h"
+        },
+        "analysis_depth": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "advanced"
+          ],
+          "default": "basic"
+        }
+      },
+      "output_schema": {
+        "price_prediction": {
+          "type": "number"
+        },
+        "confidence": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        },
+        "sentiment_score": {
+          "type": "number",
+          "min": -1,
+          "max": 1
+        },
+        "key_factors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "datetime"
+        }
+      },
+      "pricing_model": "per_call",
+      "base_price_link": 0.05,
+      "estimated_gas_cost": 150000,
+      "execution_timeout_ms": 3000,
+      "properties_enhanced": {
+        "alignment": 0.3,
+        "autonomy": 0.2,
+        "self_improvement": 0.2
+      },
+      "created_at": "2025-11-30T03:24:30.736997"
+    },
+    "cre_defi_optimizer_v1": {
+      "workflow_id": "cre_defi_optimizer_v1",
+      "name": "DeFi Yield Optimization Workflow",
+      "description": "AI-driven DeFi yield farming optimization across protocols",
+      "category": "defi",
+      "version": "1.0",
+      "ai_models_required": [
+        "yield_optimizer_ml",
+        "risk_assessor_v3"
+      ],
+      "chainlink_feeds_required": [
+        "DeFi_Protocol_Rates",
+        "Token_Prices"
+      ],
+      "input_schema": {
+        "wallet_address": {
+          "type": "string",
+          "required": true
+        },
+        "risk_tolerance": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "default": "medium"
+        },
+        "asset_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "output_schema": {
+        "optimal_strategies": {
+          "type": "array",
+          "items": {
+            "protocol": {
+              "type": "string"
+            },
+            "apy": {
+              "type": "number"
+            },
+            "risk_score": {
+              "type": "number"
+            },
+            "allocation_percentage": {
+              "type": "number"
+            }
+          }
+        },
+        "total_expected_apy": {
+          "type": "number"
+        },
+        "risk_assessment": {
+          "type": "object"
+        }
+      },
+      "pricing_model": "performance_based",
+      "base_price_link": 0.0,
+      "estimated_gas_cost": 250000,
+      "execution_timeout_ms": 5000,
+      "properties_enhanced": {
+        "self_organization": 0.4,
+        "autonomy": 0.3,
+        "alignment": 0.2
+      },
+      "created_at": "2025-11-30T03:24:30.737002"
+    },
+    "cre_prediction_market_v1": {
+      "workflow_id": "cre_prediction_market_v1",
+      "name": "Prediction Market AI Advisor",
+      "description": "AI predictions for betting markets with confidence scoring",
+      "category": "prediction",
+      "version": "1.0",
+      "ai_models_required": [
+        "prediction_ensemble_v4",
+        "probability_calibrator"
+      ],
+      "chainlink_feeds_required": [
+        "Event_Data",
+        "Market_Odds",
+        "Social_Sentiment"
+      ],
+      "input_schema": {
+        "market_id": {
+          "type": "string",
+          "required": true
+        },
+        "data_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prediction_horizon": {
+          "type": "string",
+          "enum": [
+            "1h",
+            "1d",
+            "1w",
+            "1m"
+          ]
+        }
+      },
+      "output_schema": {
+        "prediction": {
+          "type": "object"
+        },
+        "probability": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        },
+        "confidence": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        },
+        "key_indicators": {
+          "type": "array"
+        },
+        "recommended_bet_size": {
+          "type": "number"
+        }
+      },
+      "pricing_model": "subscription",
+      "base_price_link": 10.0,
+      "estimated_gas_cost": 200000,
+      "execution_timeout_ms": 4000,
+      "properties_enhanced": {
+        "self_improvement": 0.4,
+        "alignment": 0.3,
+        "autonomy": 0.2
+      },
+      "created_at": "2025-11-30T03:24:30.737005"
+    }
+  },
+  "executions": {
+    "1e59ddb84d62a8eb": {
+      "execution_id": "1e59ddb84d62a8eb",
+      "workflow_id": "cre_price_analysis_v1",
+      "input_data": {
+        "symbol": "BTC",
+        "timeframe": "4h",
+        "analysis_depth": "basic"
+      },
+      "output_data": {
+        "price_prediction": -0.14884336037273715,
+        "confidence": 0.6162458217826567,
+        "sentiment_score": 0.24328525238239884,
+        "key_factors": [
+          "market_momentum",
+          "social_sentiment",
+          "technical_analysis_4h"
+        ],
+        "timestamp": "2025-11-30T03:42:35.873699",
+        "model_used": "gpt-4",
+        "symbol_analyzed": "BTC",
+        "timeframe": "4h"
+      },
+      "status": "completed",
+      "start_time": "2025-11-30T03:42:32.871478",
+      "end_time": "2025-11-30T03:42:35.873714",
+      "gas_used": 150000,
+      "payment_amount_link": null,
+      "error_message": null,
+      "confidence_score": null
+    }
+  },
+  "payment_channels": {},
+  "saved_at": "2025-11-30T03:42:35.874421"
+}

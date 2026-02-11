@@ -1,0 +1,249 @@
+[
+  {
+    "task_id": "29d4f4f6d03861b7",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 5,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "100.0%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "prediction",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.5",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "29d4f4f6d03861b7",
+      "consensus_reached": true,
+      "result": "bullish",
+      "confidence_score": 0.704,
+      "agreement_ratio": 1.0,
+      "agents_consulted": 5,
+      "dissenting_agents": [],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "update_oracle",
+      "value": "bullish",
+      "confidence": 0.704,
+      "tx_hash": "0x64e4442f55765b4f6e1f944abcfb1dc4d78f940b8dc311a715b51c01f3ceac26"
+    },
+    "payment": {
+      "task_id": "29d4f4f6d03861b7",
+      "amount_link": "0.5",
+      "payer": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD53",
+      "agent_splits": {
+        "pred-01": "0.089489",
+        "pred-02": "0.089489",
+        "pred-03": "0.089489",
+        "pred-04": "0.089489",
+        "pred-05": "0.092045"
+      },
+      "protocol_fee": "0.050",
+      "tx_hash": "0x23c045038a42086e6174385341f6b3cd0b96a123fd1e8d67f5a86d35a4330270",
+      "status": "completed"
+    },
+    "total_time_ms": 638
+  },
+  {
+    "task_id": "c07a33ead58628f2",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 4,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "72.4%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "risk_assessment",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.3",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "c07a33ead58628f2",
+      "consensus_reached": true,
+      "result": "medium",
+      "confidence_score": 0.6999999999999998,
+      "agreement_ratio": 0.7241379310344828,
+      "agents_consulted": 4,
+      "dissenting_agents": [
+        "risk-03"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "defensive",
+      "risk_level": "medium",
+      "tx_hash": "0xeb474f83d0cf5d7cbd510ed6ce843f08d3152d8084e21b4b8cc856f62f4eaff7"
+    },
+    "payment": {
+      "task_id": "c07a33ead58628f2",
+      "amount_link": "0.3",
+      "payer": "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+      "agent_splits": {
+        "risk-01": "0.065172",
+        "risk-02": "0.065172",
+        "risk-03": "0.074483",
+        "risk-04": "0.065172"
+      },
+      "protocol_fee": "0.030",
+      "tx_hash": "0x26a690712e7460410c95e9e0ace41174a6e63754614155d0c7d527920bc036f3",
+      "status": "completed"
+    },
+    "total_time_ms": 396
+  },
+  {
+    "task_id": "fdf46c0a839b96d9",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 3,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "100.0%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "monitoring",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.1",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "fdf46c0a839b96d9",
+      "consensus_reached": true,
+      "result": "degraded",
+      "confidence_score": 0.7666666666666666,
+      "agreement_ratio": 1.0,
+      "agents_consulted": 3,
+      "dissenting_agents": [],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "send_alert",
+      "message": "Swarm Alert [monitoring]: degraded (confidence: 77%)",
+      "channel": "whatsapp"
+    },
+    "payment": {
+      "task_id": "fdf46c0a839b96d9",
+      "amount_link": "0.1",
+      "payer": "0xdD2FD4581271e230360230F9337D5c0430Bf44C0",
+      "agent_splits": {
+        "mon-01": "0.031304",
+        "mon-02": "0.027391",
+        "mon-03": "0.031304"
+      },
+      "protocol_fee": "0.010",
+      "tx_hash": "0x93b4662075fb294c6e35c0d8ea9b43156e3e5ff3a58934a33bbbe1f125521c06",
+      "status": "completed"
+    },
+    "total_time_ms": 317
+  },
+  {
+    "task_id": "c7d68e798cf66680",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 5,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": false,
+        "agreement": "40.0%",
+        "status": "warn"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "analysis",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.4",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "c7d68e798cf66680",
+      "consensus_reached": false,
+      "result": "diversify across l2s",
+      "confidence_score": 0.8,
+      "agreement_ratio": 0.4,
+      "agents_consulted": 5,
+      "dissenting_agents": [
+        "anl-01",
+        "anl-02",
+        "anl-04"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "publish_report",
+      "result": "diversify across l2s"
+    },
+    "payment": {
+      "task_id": "c7d68e798cf66680",
+      "amount_link": "0.4",
+      "payer": "0x2546BcD3c84621e976D8185a91A922aE77ECEc30",
+      "agent_splits": {
+        "anl-01": "0.072000",
+        "anl-02": "0.072000",
+        "anl-03": "0.072000",
+        "anl-04": "0.072000",
+        "anl-05": "0.072000"
+      },
+      "protocol_fee": "0.040",
+      "tx_hash": "0x220133e3d83e9e9104c53c41c606a097493b318b26e3d564e1dd079d46ac1d85",
+      "status": "completed"
+    },
+    "total_time_ms": 217
+  }
+]

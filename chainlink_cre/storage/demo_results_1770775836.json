@@ -1,0 +1,251 @@
+[
+  {
+    "task_id": "5162a0fb42c0ca0e",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 5,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": false,
+        "agreement": "56.7%",
+        "status": "warn"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "prediction",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.5",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "5162a0fb42c0ca0e",
+      "consensus_reached": false,
+      "result": "bullish",
+      "confidence_score": 0.7550832153464592,
+      "agreement_ratio": 0.5673668564669113,
+      "agents_consulted": 5,
+      "dissenting_agents": [
+        "pred-01",
+        "pred-03"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "update_oracle",
+      "value": "bullish",
+      "confidence": 0.7550832153464592,
+      "tx_hash": "0x2e2606ef90bf5ef48809d1b9e0ad058da39269b3e67a56733c4f59e4aeaf8a58"
+    },
+    "payment": {
+      "task_id": "5162a0fb42c0ca0e",
+      "amount_link": "0.5",
+      "payer": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD53",
+      "agent_splits": {
+        "pred-01": "0.095781",
+        "pred-02": "0.090173",
+        "pred-03": "0.098904",
+        "pred-04": "0.087977",
+        "pred-05": "0.077165"
+      },
+      "protocol_fee": "0.050",
+      "tx_hash": "0xf3ced3885604a839650aedcf18e004adcec840b0fe56f0193b73f3e782b2079b",
+      "status": "completed"
+    },
+    "total_time_ms": 460
+  },
+  {
+    "task_id": "a73f3e135f60bb08",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 4,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "100.0%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "risk_assessment",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.3",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "a73f3e135f60bb08",
+      "consensus_reached": true,
+      "result": "medium",
+      "confidence_score": 0.8013718106684369,
+      "agreement_ratio": 1.0,
+      "agents_consulted": 4,
+      "dissenting_agents": [],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "defensive",
+      "risk_level": "medium",
+      "tx_hash": "0xbd08cf070fa6c42fa504609db75f3bd9eaea0533759582188ffbeb26c3e4792e"
+    },
+    "payment": {
+      "task_id": "a73f3e135f60bb08",
+      "amount_link": "0.3",
+      "payer": "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+      "agent_splits": {
+        "risk-01": "0.077457",
+        "risk-02": "0.059986",
+        "risk-03": "0.068261",
+        "risk-04": "0.064296"
+      },
+      "protocol_fee": "0.030",
+      "tx_hash": "0x896f98b3e1e7986b66cb7d0862d6ac925ad64f535fe51d4889eba13eb83be19f",
+      "status": "completed"
+    },
+    "total_time_ms": 456
+  },
+  {
+    "task_id": "675f2fdbd0fa604c",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 3,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "100.0%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "monitoring",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.1",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "675f2fdbd0fa604c",
+      "consensus_reached": true,
+      "result": "degraded",
+      "confidence_score": 0.7571800367003513,
+      "agreement_ratio": 1.0,
+      "agents_consulted": 3,
+      "dissenting_agents": [],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "send_alert",
+      "message": "Swarm Alert [monitoring]: degraded (confidence: 76%)",
+      "channel": "whatsapp"
+    },
+    "payment": {
+      "task_id": "675f2fdbd0fa604c",
+      "amount_link": "0.1",
+      "payer": "0xdD2FD4581271e230360230F9337D5c0430Bf44C0",
+      "agent_splits": {
+        "mon-01": "0.027545",
+        "mon-02": "0.035386",
+        "mon-03": "0.027069"
+      },
+      "protocol_fee": "0.010",
+      "tx_hash": "0xba123c6c9c967cf00981c768e3c652844742c02107b2140b6903dddb9f8b3e80",
+      "status": "completed"
+    },
+    "total_time_ms": 351
+  },
+  {
+    "task_id": "c68a88d526e8496b",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 5,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": false,
+        "agreement": "23.8%",
+        "status": "warn"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "analysis",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.4",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "c68a88d526e8496b",
+      "consensus_reached": false,
+      "result": "analysis by risk modeler: task-specific insight on analyze optimal yield farming strategy a",
+      "confidence_score": 0.9702431617302381,
+      "agreement_ratio": 0.23827971030777456,
+      "agents_consulted": 5,
+      "dissenting_agents": [
+        "anl-01",
+        "anl-02",
+        "anl-04",
+        "anl-05"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "publish_report",
+      "result": "analysis by risk modeler: task-specific insight on analyze optimal yield farming strategy a"
+    },
+    "payment": {
+      "task_id": "c68a88d526e8496b",
+      "amount_link": "0.4",
+      "payer": "0x2546BcD3c84621e976D8185a91A922aE77ECEc30",
+      "agent_splits": {
+        "anl-01": "0.074898",
+        "anl-02": "0.071653",
+        "anl-03": "0.085781",
+        "anl-04": "0.069716",
+        "anl-05": "0.057952"
+      },
+      "protocol_fee": "0.040",
+      "tx_hash": "0xa90cd910f67158b5dd6ab0e437d3f11ce381e57846005ae101c457ede2a2ba8d",
+      "status": "completed"
+    },
+    "total_time_ms": 558
+  }
+]

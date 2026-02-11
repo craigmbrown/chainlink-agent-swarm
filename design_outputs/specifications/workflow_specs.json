@@ -1,0 +1,212 @@
+{
+  "cre_price_analysis_v1": {
+    "workflow_id": "cre_price_analysis_v1",
+    "name": "AI Price Analysis Workflow",
+    "description": "LLM-powered crypto price analysis with sentiment integration",
+    "category": "prediction",
+    "input_schema": {
+      "symbol": {
+        "type": "string",
+        "required": true
+      },
+      "timeframe": {
+        "type": "string",
+        "enum": [
+          "1h",
+          "4h",
+          "1d"
+        ],
+        "default": "4h"
+      },
+      "analysis_depth": {
+        "type": "string",
+        "enum": [
+          "basic",
+          "advanced"
+        ],
+        "default": "basic"
+      }
+    },
+    "output_schema": {
+      "price_prediction": {
+        "type": "number"
+      },
+      "confidence": {
+        "type": "number",
+        "min": 0,
+        "max": 1
+      },
+      "sentiment_score": {
+        "type": "number",
+        "min": -1,
+        "max": 1
+      },
+      "key_factors": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "datetime"
+      }
+    },
+    "pricing_model": "per_call",
+    "base_price_link": 0.05,
+    "ai_models_required": [
+      "gpt-4",
+      "sentiment_analyzer_v2"
+    ],
+    "chainlink_feeds_required": [
+      "BTC/USD",
+      "ETH/USD",
+      "LINK/USD"
+    ],
+    "estimated_gas_cost": 150000,
+    "expected_execution_time_ms": 3000,
+    "properties_enhanced": {
+      "alignment": 0.3,
+      "autonomy": 0.2,
+      "self_improvement": 0.2
+    },
+    "created_at": "2025-11-30 03:24:30.736997"
+  },
+  "cre_defi_optimizer_v1": {
+    "workflow_id": "cre_defi_optimizer_v1",
+    "name": "DeFi Yield Optimization Workflow",
+    "description": "AI-driven DeFi yield farming optimization across protocols",
+    "category": "defi",
+    "input_schema": {
+      "wallet_address": {
+        "type": "string",
+        "required": true
+      },
+      "risk_tolerance": {
+        "type": "string",
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "default": "medium"
+      },
+      "asset_types": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "output_schema": {
+      "optimal_strategies": {
+        "type": "array",
+        "items": {
+          "protocol": {
+            "type": "string"
+          },
+          "apy": {
+            "type": "number"
+          },
+          "risk_score": {
+            "type": "number"
+          },
+          "allocation_percentage": {
+            "type": "number"
+          }
+        }
+      },
+      "total_expected_apy": {
+        "type": "number"
+      },
+      "risk_assessment": {
+        "type": "object"
+      }
+    },
+    "pricing_model": "performance_based",
+    "base_price_link": 0.0,
+    "ai_models_required": [
+      "yield_optimizer_ml",
+      "risk_assessor_v3"
+    ],
+    "chainlink_feeds_required": [
+      "DeFi_Protocol_Rates",
+      "Token_Prices"
+    ],
+    "estimated_gas_cost": 250000,
+    "expected_execution_time_ms": 5000,
+    "properties_enhanced": {
+      "self_organization": 0.4,
+      "autonomy": 0.3,
+      "alignment": 0.2
+    },
+    "created_at": "2025-11-30 03:24:30.737002"
+  },
+  "cre_prediction_market_v1": {
+    "workflow_id": "cre_prediction_market_v1",
+    "name": "Prediction Market AI Advisor",
+    "description": "AI predictions for betting markets with confidence scoring",
+    "category": "prediction",
+    "input_schema": {
+      "market_id": {
+        "type": "string",
+        "required": true
+      },
+      "data_sources": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "prediction_horizon": {
+        "type": "string",
+        "enum": [
+          "1h",
+          "1d",
+          "1w",
+          "1m"
+        ]
+      }
+    },
+    "output_schema": {
+      "prediction": {
+        "type": "object"
+      },
+      "probability": {
+        "type": "number",
+        "min": 0,
+        "max": 1
+      },
+      "confidence": {
+        "type": "number",
+        "min": 0,
+        "max": 1
+      },
+      "key_indicators": {
+        "type": "array"
+      },
+      "recommended_bet_size": {
+        "type": "number"
+      }
+    },
+    "pricing_model": "subscription",
+    "base_price_link": 10.0,
+    "ai_models_required": [
+      "prediction_ensemble_v4",
+      "probability_calibrator"
+    ],
+    "chainlink_feeds_required": [
+      "Event_Data",
+      "Market_Odds",
+      "Social_Sentiment"
+    ],
+    "estimated_gas_cost": 200000,
+    "expected_execution_time_ms": 4000,
+    "properties_enhanced": {
+      "self_improvement": 0.4,
+      "alignment": 0.3,
+      "autonomy": 0.2
+    },
+    "created_at": "2025-11-30 03:24:30.737005"
+  }
+}

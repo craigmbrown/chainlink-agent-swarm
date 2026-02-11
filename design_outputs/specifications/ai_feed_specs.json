@@ -1,0 +1,82 @@
+{
+  "crypto_sentiment_v1": {
+    "feed_id": "crypto_sentiment_v1",
+    "name": "Crypto Market Sentiment Feed",
+    "description": "Real-time crypto sentiment analysis from social media and news",
+    "ai_model_type": "llm_ensemble",
+    "data_sources": [
+      "twitter_api",
+      "reddit_api",
+      "news_aggregator",
+      "telegram_monitors"
+    ],
+    "update_frequency_minutes": 5,
+    "confidence_threshold": 0.7,
+    "output_format": "sentiment",
+    "validation_method": "cross_validation_ensemble",
+    "properties_impact": {
+      "self_improvement": 0.3,
+      "alignment": 0.2
+    }
+  },
+  "defi_risk_assessment_v1": {
+    "feed_id": "defi_risk_assessment_v1",
+    "name": "DeFi Protocol Risk Assessment",
+    "description": "AI-powered risk scoring for DeFi protocols and strategies",
+    "ai_model_type": "ml_classifier",
+    "data_sources": [
+      "on_chain_analytics",
+      "tvl_data",
+      "audit_reports",
+      "exploit_database"
+    ],
+    "update_frequency_minutes": 60,
+    "confidence_threshold": 0.8,
+    "output_format": "classification",
+    "validation_method": "historical_backtest",
+    "properties_impact": {
+      "alignment": 0.4,
+      "durability": 0.2
+    }
+  },
+  "market_prediction_ensemble_v1": {
+    "feed_id": "market_prediction_ensemble_v1",
+    "name": "Market Prediction Ensemble",
+    "description": "Ensemble AI predictions for crypto market movements",
+    "ai_model_type": "ensemble",
+    "data_sources": [
+      "price_feeds",
+      "volume_data",
+      "sentiment_feeds",
+      "macro_indicators"
+    ],
+    "update_frequency_minutes": 15,
+    "confidence_threshold": 0.75,
+    "output_format": "prediction",
+    "validation_method": "rolling_window_validation",
+    "properties_impact": {
+      "self_improvement": 0.4,
+      "autonomy": 0.2
+    }
+  },
+  "yield_opportunity_scanner_v1": {
+    "feed_id": "yield_opportunity_scanner_v1",
+    "name": "DeFi Yield Opportunity Scanner",
+    "description": "AI-powered scanning for high-yield DeFi opportunities",
+    "ai_model_type": "time_series",
+    "data_sources": [
+      "defi_protocols",
+      "yield_aggregators",
+      "liquidity_pools",
+      "farming_contracts"
+    ],
+    "update_frequency_minutes": 30,
+    "confidence_threshold": 0.6,
+    "output_format": "prediction",
+    "validation_method": "yield_simulation",
+    "properties_impact": {
+      "self_organization": 0.3,
+      "self_improvement": 0.2
+    }
+  }
+}

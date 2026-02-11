@@ -1,0 +1,87 @@
+{
+  "handler_info": {
+    "handler_id": "891b2113986b2838",
+    "initialized_at": "2025-11-30T03:41:10.080015",
+    "current_network": "ethereum_sepolia",
+    "agent_id": "bbbf008665c3d81f"
+  },
+  "channels": {
+    "0b32c0fd2e72f14b834695189ad04f57": {
+      "channel_id": "0b32c0fd2e72f14b834695189ad04f57",
+      "workflow_id": "test_workflow_001",
+      "payer_address": "0x742D35Cc6678d5c6e7b3c3F4F6e52738a8c1D5d3",
+      "receiver_address": "0x1234567890123456789012345678901234567890",
+      "token_contract": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
+      "initial_balance": "10.0",
+      "current_balance": "9.5",
+      "reserved_balance": "0.0",
+      "payment_count": 1,
+      "total_paid": "0.5",
+      "last_payment_timestamp": "2025-11-30T03:41:10.585653",
+      "channel_nonce": 1,
+      "status": "active",
+      "created_at": "2025-11-30T03:41:10.080265",
+      "updated_at": "2025-11-30T03:41:10.585653"
+    }
+  },
+  "transactions": {
+    "979324049971d831ab3d4a857ab5b5df": {
+      "tx_id": "979324049971d831ab3d4a857ab5b5df",
+      "channel_id": "0b32c0fd2e72f14b834695189ad04f57",
+      "request_id": "req_20251130_034110",
+      "amount_link": "0.5",
+      "gas_fee": "0.0006499999999999999701627562131989179761148989200592041015625",
+      "status": "completed",
+      "blockchain_tx_hash": "0x3b1a3cfa07aa017c18a944ec09a08feaa57ea5fce4dcc7fff52ecb4dfb319cad",
+      "confirmation_count": 3,
+      "error_message": null,
+      "created_at": "2025-11-30T03:41:10.084336",
+      "confirmed_at": "2025-11-30T03:41:10.585660",
+      "metadata": {}
+    },
+    "f3305d8ca05a34d16b6319391911dff5": {
+      "tx_id": "f3305d8ca05a34d16b6319391911dff5",
+      "channel_id": "standalone",
+      "request_id": "standalone_20251130_034110",
+      "amount_link": "1.0",
+      "gas_fee": "0.0006499999999999999701627562131989179761148989200592041015625",
+      "status": "completed",
+      "blockchain_tx_hash": "0x8b084775cd7c73bc4b30e1352db758cdcbcf97821ec3932e0a08f35a7a896976",
+      "confirmation_count": 3,
+      "error_message": null,
+      "created_at": "2025-11-30T03:41:10.586171",
+      "confirmed_at": "2025-11-30T03:41:11.086865",
+      "metadata": {}
+    }
+  },
+  "requests": {
+    "req_20251130_034110": {
+      "request_id": "req_20251130_034110",
+      "workflow_id": "test_workflow_001",
+      "payer_address": "0x742D35Cc6678d5c6e7b3c3F4F6e52738a8c1D5d3",
+      "receiver_address": "0x1234567890123456789012345678901234567890",
+      "amount_link": "0.5",
+      "currency": "LINK",
+      "payment_type": "per_call",
+      "metadata": {
+        "service": "AI prediction",
+        "complexity": "basic"
+      },
+      "expiry_timestamp": "2025-12-01T03:41:10.084311",
+      "created_at": "2025-11-30T03:41:10.084311"
+    },
+    "standalone_20251130_034110": {
+      "request_id": "standalone_20251130_034110",
+      "workflow_id": "standalone_workflow",
+      "payer_address": "0x742D35Cc6678d5c6e7b3c3F4F6e52738a8c1D5d3",
+      "receiver_address": "0x1234567890123456789012345678901234567890",
+      "amount_link": "1.0",
+      "currency": "LINK",
+      "payment_type": "one_time",
+      "metadata": {},
+      "expiry_timestamp": "2025-12-01T03:41:10.586145",
+      "created_at": "2025-11-30T03:41:10.586145"
+    }
+  },
+  "saved_at": "2025-11-30T03:41:11.087182"
+}

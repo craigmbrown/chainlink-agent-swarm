@@ -1,0 +1,35 @@
+{
+  "cre_micropayments_main": {
+    "payment_channel_id": "cre_micropayments_main",
+    "token_address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+    "min_payment_amount": 0.001,
+    "max_payment_amount": 1000.0,
+    "settlement_frequency_minutes": 5,
+    "dispute_resolution_period_hours": 24,
+    "fee_percentage": 0.5,
+    "auto_settlement_enabled": true,
+    "security_deposit_required": true
+  },
+  "cre_subscriptions_main": {
+    "payment_channel_id": "cre_subscriptions_main",
+    "token_address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+    "min_payment_amount": 1.0,
+    "max_payment_amount": 10000.0,
+    "settlement_frequency_minutes": 1440,
+    "dispute_resolution_period_hours": 72,
+    "fee_percentage": 1.0,
+    "auto_settlement_enabled": true,
+    "security_deposit_required": false
+  },
+  "cre_performance_fees": {
+    "payment_channel_id": "cre_performance_fees",
+    "token_address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+    "min_payment_amount": 0.1,
+    "max_payment_amount": 50000.0,
+    "settlement_frequency_minutes": 10080,
+    "dispute_resolution_period_hours": 168,
+    "fee_percentage": 0.25,
+    "auto_settlement_enabled": true,
+    "security_deposit_required": true
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "alignment_based_pricing": {
+    "strategy_id": "alignment_based_pricing",
+    "target_properties": {
+      "alignment": 0.95
+    },
+    "optimization_algorithm": "dynamic_pricing_ml",
+    "pricing_adjustments": {
+      "high_alignment": {
+        "multiplier": 1.2,
+        "description": "Premium for aligned workflows"
+      },
+      "low_alignment": {
+        "multiplier": 0.8,
+        "description": "Discount to improve adoption"
+      }
+    },
+    "performance_metrics": {
+      "revenue_per_call": "target_increase_25_percent",
+      "customer_satisfaction": "target_above_4_5",
+      "repeat_usage": "target_above_70_percent"
+    },
+    "expected_revenue_increase": 0.25,
+    "compute_advantage_target": 3.2
+  },
+  "autonomy_optimization": {
+    "strategy_id": "autonomy_optimization",
+    "target_properties": {
+      "autonomy": 0.95
+    },
+    "optimization_algorithm": "autonomous_scaling",
+    "pricing_adjustments": {
+      "peak_demand": {
+        "scale_factor": 2.0,
+        "description": "Auto-scale during high demand"
+      },
+      "low_demand": {
+        "scale_factor": 0.5,
+        "description": "Reduce costs during low demand"
+      }
+    },
+    "performance_metrics": {
+      "system_uptime": "target_99_9_percent",
+      "response_time": "target_under_3_seconds",
+      "auto_scaling_efficiency": "target_above_85_percent"
+    },
+    "expected_revenue_increase": 0.4,
+    "compute_advantage_target": 3.3
+  },
+  "self_improvement_loop": {
+    "strategy_id": "self_improvement_loop",
+    "target_properties": {
+      "self_improvement": 0.9
+    },
+    "optimization_algorithm": "reinforcement_learning",
+    "pricing_adjustments": {
+      "performance_based": {
+        "percentage": 0.05,
+        "description": "5% of improved outcomes"
+      },
+      "accuracy_bonus": {
+        "threshold": 0.9,
+        "bonus": 0.02,
+        "description": "2% bonus for >90% accuracy"
+      }
+    },
+    "performance_metrics": {
+      "prediction_accuracy": "target_improve_5_percent_monthly",
+      "model_performance": "target_continuous_improvement",
+      "feedback_incorporation": "target_24_hour_cycle"
+    },
+    "expected_revenue_increase": 0.35,
+    "compute_advantage_target": 3.4
+  },
+  "multi_property_synergy": {
+    "strategy_id": "multi_property_synergy",
+    "target_properties": {
+      "alignment": 0.95,
+      "autonomy": 0.95,
+      "self_organization": 0.95,
+      "self_improvement": 0.9
+    },
+    "optimization_algorithm": "multi_objective_optimization",
+    "pricing_adjustments": {
+      "synergy_bonus": {
+        "multiplier": 1.5,
+        "description": "Premium for multi-property optimization"
+      },
+      "bundle_discount": {
+        "percentage": 0.15,
+        "description": "15% discount for service bundles"
+      }
+    },
+    "performance_metrics": {
+      "compute_advantage": "target_3_5",
+      "overall_revenue": "target_increase_50_percent",
+      "property_correlation": "target_positive_correlation"
+    },
+    "expected_revenue_increase": 0.52,
+    "compute_advantage_target": 3.5
+  }
+}

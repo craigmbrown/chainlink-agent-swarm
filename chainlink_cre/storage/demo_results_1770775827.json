@@ -1,0 +1,254 @@
+[
+  {
+    "task_id": "9e9f048224213a3f",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 5,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "77.6%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "prediction",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.5",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "9e9f048224213a3f",
+      "consensus_reached": true,
+      "result": "bullish",
+      "confidence_score": 0.8396650179625642,
+      "agreement_ratio": 0.7763565433942949,
+      "agents_consulted": 5,
+      "dissenting_agents": [
+        "pred-05"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "update_oracle",
+      "value": "bullish",
+      "confidence": 0.8396650179625642,
+      "tx_hash": "0x9dc5f072ec5e50c376a1dd05aea295f5c848baa12c83e4e67660633811981af7"
+    },
+    "payment": {
+      "task_id": "9e9f048224213a3f",
+      "amount_link": "0.5",
+      "payer": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD53",
+      "agent_splits": {
+        "pred-01": "0.074696",
+        "pred-02": "0.079312",
+        "pred-03": "0.099444",
+        "pred-04": "0.095909",
+        "pred-05": "0.100640"
+      },
+      "protocol_fee": "0.050",
+      "tx_hash": "0x59f50672fde6d54a5ce72ad2b01ae5b963810a65a28f63c7bbea4d06f3bf08df",
+      "status": "completed"
+    },
+    "total_time_ms": 516
+  },
+  {
+    "task_id": "30a09be64064b572",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 4,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "74.4%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "risk_assessment",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.3",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "30a09be64064b572",
+      "consensus_reached": true,
+      "result": "medium",
+      "confidence_score": 0.8012887830276018,
+      "agreement_ratio": 0.7441502927977325,
+      "agents_consulted": 4,
+      "dissenting_agents": [
+        "risk-02"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "defensive",
+      "risk_level": "medium",
+      "tx_hash": "0x709fce8e8fd685925abf66db5b70cc4c7e5884094561d05752230040f8accbd8"
+    },
+    "payment": {
+      "task_id": "30a09be64064b572",
+      "amount_link": "0.3",
+      "payer": "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+      "agent_splits": {
+        "risk-01": "0.061863",
+        "risk-02": "0.069079",
+        "risk-03": "0.065064",
+        "risk-04": "0.073994"
+      },
+      "protocol_fee": "0.030",
+      "tx_hash": "0x4fc858f8ef6736e9d851b375f79bde28b16882d92395240096b72c415ce9c339",
+      "status": "completed"
+    },
+    "total_time_ms": 479
+  },
+  {
+    "task_id": "cc7a0bb46686e771",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 3,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": true,
+        "agreement": "67.7%",
+        "status": "ok"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "monitoring",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.1",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "cc7a0bb46686e771",
+      "consensus_reached": true,
+      "result": "healthy",
+      "confidence_score": 0.7222494973763738,
+      "agreement_ratio": 0.6767642572694975,
+      "agents_consulted": 3,
+      "dissenting_agents": [
+        "mon-01"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "send_alert",
+      "message": "Swarm Alert [monitoring]: healthy (confidence: 72%)",
+      "channel": "whatsapp"
+    },
+    "payment": {
+      "task_id": "cc7a0bb46686e771",
+      "amount_link": "0.1",
+      "payer": "0xdD2FD4581271e230360230F9337D5c0430Bf44C0",
+      "agent_splits": {
+        "mon-01": "0.029091",
+        "mon-02": "0.030444",
+        "mon-03": "0.030465"
+      },
+      "protocol_fee": "0.010",
+      "tx_hash": "0x5760163252ee87aa4a140a38e289065728b0b6138048e069439e294a68714e86",
+      "status": "completed"
+    },
+    "total_time_ms": 317
+  },
+  {
+    "task_id": "0a7f90ec9e565e14",
+    "steps": [
+      {
+        "step": "receive_task",
+        "status": "ok"
+      },
+      {
+        "step": "route_to_agents",
+        "agents_consulted": 5,
+        "status": "ok"
+      },
+      {
+        "step": "aggregate_consensus",
+        "consensus_reached": false,
+        "agreement": "22.1%",
+        "status": "warn"
+      },
+      {
+        "step": "execute_action",
+        "action_type": "analysis",
+        "status": "ok"
+      },
+      {
+        "step": "settle_payment",
+        "amount": "0.4",
+        "status": "ok"
+      }
+    ],
+    "consensus": {
+      "task_id": "0a7f90ec9e565e14",
+      "consensus_reached": false,
+      "result": "analysis by data scientist: task-specific insight on analyze optimal yield farming strategy a",
+      "confidence_score": 0.8712344180069131,
+      "agreement_ratio": 0.22147099964354114,
+      "agents_consulted": 5,
+      "dissenting_agents": [
+        "anl-02",
+        "anl-03",
+        "anl-04",
+        "anl-05"
+      ],
+      "execution_time_ms": 0
+    },
+    "action": {
+      "action": "publish_report",
+      "result": "analysis by data scientist: task-specific insight on analyze optimal yield farming strategy a"
+    },
+    "payment": {
+      "task_id": "0a7f90ec9e565e14",
+      "amount_link": "0.4",
+      "payer": "0x2546BcD3c84621e976D8185a91A922aE77ECEc30",
+      "agent_splits": {
+        "anl-01": "0.079730",
+        "anl-02": "0.075797",
+        "anl-03": "0.061715",
+        "anl-04": "0.076585",
+        "anl-05": "0.066173"
+      },
+      "protocol_fee": "0.040",
+      "tx_hash": "0x0b1bb0e9484eebc2baf159fdd3e9af3360fa64f754db3dcc5de986289f3ecc41",
+      "status": "completed"
+    },
+    "total_time_ms": 613
+  }
+]

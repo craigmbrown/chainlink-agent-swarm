@@ -1,0 +1,269 @@
+# Chainlink CRE Workflow: AI Agent Swarm Orchestrator v1
+# @requirement: REQ-CRE-SWARM-001 - Multi-Agent Task Orchestration
+# @hackathon: Chainlink Convergence 2026
+# @tracks: CRE & AI, Prediction Markets, Risk & Compliance
+
+name: agent_swarm_orchestrator_v1
+version: "1.0.0"
+description: >
+  AI Agent Swarm that receives tasks via webhook, routes to specialized agents,
+  aggregates consensus via Byzantine voting (67% threshold), executes on-chain
+  actions, and settles payments via x402 micropayments.
+
+config:
+  consensus_threshold: 0.67
+  min_agents_per_task: 3
+  max_agents_per_task: 7
+  payment_currency: LINK
+  default_chain: base
+  ccip_enabled: true
+
+triggers:
+  - type: WEBHOOK
+    id: agent_task_request
+    description: "External task submission via HTTP POST"
+    endpoint: /api/v1/tasks
+    auth: x402_payment_header
+    schema:
+      task_type:
+        type: string
+        enum: [prediction, analysis, monitoring, risk_assessment]
+      query:
+        type: string
+        description: "Natural language task description"
+      requester_address:
+        type: string
+        description: "EVM address of task requester"
+      budget_link:
+        type: number
+        description: "Maximum LINK budget for this task"
+
+  - type: EVM_LOG
+    id: task_submitted_onchain
+    description: "On-chain task submission event"
+    contract: "{{ORACLE_SUBSCRIPTION_ADDRESS}}"
+    event: TaskSubmitted(address indexed requester, bytes32 taskId, uint256 budget)
+    chain: base
+
+  - type: CRON
+    id: hourly_health_check
+    description: "Periodic swarm health monitoring"
+    schedule: "0 * * * *"
+
+actions:
+  # Step 1: Parse and validate incoming task
+  receive_task:
+    type: compute
+    description: "Parse incoming request and classify task type"
+    inputs:
+      - trigger.payload
+    compute:
+      runtime: python3
+      handler: |
+        def handle(payload):
+            task_type = payload.get("task_type", "analysis")
+            query = payload.get("query", "")
+            budget = float(payload.get("budget_link", 0.1))
+            return {
+                "task_id": generate_id(),
+                "task_type": task_type,
+                "query": query,
+                "budget_link": budget,
+                "requester": payload.get("requester_address"),
+                "timestamp": now_utc()
+            }
+    outputs:
+      - task_context
+
+  # Step 2: Select and dispatch to agents
+  route_to_agents:
+    type: compute
+    description: "Select 3+ agents based on task type and execute in parallel"
+    depends_on: [receive_task]
+    inputs:
+      - task_context
+    compute:
+      runtime: python3
+      handler: |
+        def handle(task_context):
+            agent_pool = select_agents(
+                task_type=task_context["task_type"],
+                min_count=3,
+                max_count=7,
+                strategy="expertise_match"
+            )
+            results = parallel_execute(
+                agents=agent_pool,
+                query=task_context["query"],
+                timeout_seconds=30
+            )
+            return {
+                "agent_responses": results,
+                "agents_consulted": len(agent_pool),
+                "execution_time_ms": elapsed()
+            }
+    outputs:
+      - agent_responses
+    config:
+      parallel: true
+      timeout: 30s
+
+  # Step 3: Byzantine consensus aggregation
+  aggregate_consensus:
+    type: compute
+    description: "Apply Byzantine voting with 67% threshold"
+    depends_on: [route_to_agents]
+    inputs:
+      - agent_responses
+    compute:
+      runtime: python3
+      handler: |
+        def handle(agent_responses):
+            responses = agent_responses["agent_responses"]
+            consensus = byzantine_vote(
+                responses=responses,
+                threshold=0.67,
+                weighting="expertise"
+            )
+            return {
+                "consensus_result": consensus["result"],
+                "confidence_score": consensus["confidence"],
+                "agreement_ratio": consensus["agreement"],
+                "dissenting_agents": consensus.get("dissenters", []),
+                "consensus_reached": consensus["agreement"] >= 0.67
+            }
+    outputs:
+      - consensus_result
+
+  # Step 4: Execute the appropriate on-chain action
+  execute_action:
+    type: conditional
+    description: "Route to appropriate execution based on task type"
+    depends_on: [aggregate_consensus]
+    inputs:
+      - task_context
+      - consensus_result
+    conditions:
+      - if: "task_context.task_type == 'prediction'"
+        then: update_oracle
+      - if: "task_context.task_type == 'analysis'"
+        then: publish_report
+      - if: "task_context.task_type == 'monitoring'"
+        then: send_alert
+      - if: "task_context.task_type == 'risk_assessment'"
+        then: trigger_defensive_action
+
+  # Step 4a: Update oracle with prediction consensus
+  update_oracle:
+    type: evm_write
+    description: "Push consensus prediction to oracle contract"
+    inputs:
+      - consensus_result
+    contract: "{{ORACLE_SUBSCRIPTION_ADDRESS}}"
+    function: updatePrediction(bytes32 taskId, bytes result, uint256 confidence)
+    chain: base
+    gas_limit: 200000
+
+  # Step 4b: Publish analysis report
+  publish_report:
+    type: compute
+    description: "Format and publish analysis report"
+    inputs:
+      - consensus_result
+    compute:
+      runtime: python3
+      handler: |
+        def handle(consensus_result):
+            report = format_report(consensus_result)
+            store_ipfs(report)
+            return {"report_cid": cid, "published": True}
+
+  # Step 4c: Send monitoring alert
+  send_alert:
+    type: webhook_call
+    description: "Send WhatsApp alert for monitoring results"
+    inputs:
+      - consensus_result
+    url: "{{WHATSAPP_API_ENDPOINT}}/api/sendMessage"
+    method: POST
+    body:
+      chatId: "{{ALERT_PHONE_NUMBER}}"
+      contentType: string
+      content: "Swarm Alert: {{consensus_result.consensus_result}}"
+
+  # Step 4d: Trigger defensive action for risk
+  trigger_defensive_action:
+    type: evm_write
+    description: "Execute defensive protocol action"
+    inputs:
+      - consensus_result
+    contract: "{{RISK_MANAGER_ADDRESS}}"
+    function: executeDefensiveAction(bytes32 riskId, uint8 severity, bytes action)
+    chain: base
+
+  # Step 5: Settle payment via x402
+  settle_payment:
+    type: x402_payment
+    description: "Charge requester and split revenue to contributing agents"
+    depends_on: [execute_action]
+    inputs:
+      - task_context
+      - consensus_result
+      - agent_responses
+    payment:
+      protocol: x402
+      currency: LINK
+      charge:
+        from: "{{task_context.requester}}"
+        amount: "{{task_context.budget_link}}"
+      splits:
+        - to: protocol_treasury
+          percentage: 10
+        - to: contributing_agents
+          percentage: 90
+          strategy: weighted_by_confidence
+    outputs:
+      - payment_receipt
+
+  # Step 6: Cross-chain settlement (if needed)
+  ccip_settlement:
+    type: ccip_transfer
+    description: "Cross-chain revenue settlement via CCIP"
+    depends_on: [settle_payment]
+    inputs:
+      - payment_receipt
+    enabled: "{{config.ccip_enabled}}"
+    transfer:
+      source_chain: base
+      dest_chain: ethereum
+      token: LINK
+      amount: "{{payment_receipt.protocol_fee}}"
+      receiver: "{{TREASURY_ADDRESS}}"
+
+# Error handling
+error_handling:
+  consensus_failed:
+    action: refund_requester
+    notification: send_alert
+  payment_failed:
+    action: retry_with_backoff
+    max_retries: 3
+  agent_timeout:
+    action: fallback_to_cached
+    notification: log_warning
+
+# Monitoring
+monitoring:
+  metrics:
+    - tasks_processed
+    - consensus_success_rate
+    - average_response_time
+    - revenue_generated
+    - agent_utilization
+  alerts:
+    consensus_below_threshold:
+      condition: "consensus_success_rate < 0.8"
+      action: send_alert
+    high_latency:
+      condition: "average_response_time > 10000"
+      action: scale_agents
