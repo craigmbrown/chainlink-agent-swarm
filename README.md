@@ -112,6 +112,83 @@ Task 4 - Yield analysis:     40% consensus (no quorum) [LLM]
 - **Data Feeds**: Oracle price feeds consumed by prediction agents
 - **Functions**: Serverless compute for agent execution
 
+## On-Chain Deployment Verification
+
+All contracts compiled with Foundry (Solidity 0.8.20, optimizer 200 runs) and deployed via `forge script` broadcast. Full transaction log in `contracts/broadcast/`.
+
+**Deployment: 2026-02-11 02:18:26 UTC | Chain ID: 31337 (Anvil) | 4 transactions, 2 blocks**
+
+### Transaction Log
+
+| # | Type | Contract | Tx Hash | Gas Used | Status |
+|---|------|----------|---------|----------|--------|
+| 1 | CREATE | OracleSubscription | `0x5f1b...3e674` | 2,927,008 | Success |
+| 2 | CREATE | UnifiedPredictionSubscription | `0x8822...0d47` | 6,408,888 | Success |
+| 3 | CALL | OracleSubscription.setCREAutomation() | `0x8b99...511e` | 46,111 | Success |
+| 4 | CALL | UnifiedPrediction.createMarket() | `0x013b...5d0f` | 2,927,008 | Success |
+
+**Total gas: 9,604,636 (~0.019 ETH at 2 gwei)**
+
+### Deployed Contract Addresses
+
+| Contract | Address | Verified |
+|----------|---------|----------|
+| OracleSubscription | `0x5FbDB2315678afecb367f032d93F642f64180aa3` | owner() returns deployer |
+| UnifiedPredictionSubscription | `0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512` | owner() returns deployer |
+
+### On-Chain State After Deployment
+
+```
+OracleSubscription (Block 1):
+  owner:          0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  creAutomation:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  tiers:          Free, Basic ($46), Pro ($139), Enterprise ($462)
+
+UnifiedPredictionSubscription (Block 2):
+  owner:          0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  workflowOwner:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  workflowName:   "agentswarm" (0x6167656e74737761726d)
+  markets[0]:     "Will ETH reach $5,000 by March 2026?"
+  deadline:       2026-02-18 02:18:14 UTC (7-day window)
+  disputePeriod:  24 hours
+  consensus:      67% Byzantine threshold
+```
+
+### Full Transaction Hashes
+
+```
+TX1 (OracleSubscription CREATE):
+  0x5f1b0310978374fe042abdd0f000c6ba9fb3864d07aad1900fc96adceae3e674
+
+TX2 (UnifiedPredictionSubscription CREATE):
+  0x88229e04b61fcfbaa8ebd5374866feae52fe918a9bc793563c2eb3957f220d47
+
+TX3 (setCREAutomation CALL):
+  0x8b99c5abd3664f0dc20de8e69ab6a06d8d9593b275d555bb242bbc2ee385511e
+
+TX4 (createMarket CALL):
+  0x013b24f463dc8417019cf46d9319d450895d4c579a31a0cde3c65bc100ac5d0f
+```
+
+### Reproduce Deployment
+
+```bash
+# Start Anvil with extended contract size limit
+anvil --code-size-limit 50000 &
+
+# Deploy all contracts
+cd contracts
+PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+  forge script script/Deploy.s.sol:DeployAll \
+  --rpc-url http://localhost:8545 \
+  --broadcast \
+  --code-size-limit 50000
+
+# Verify on-chain state
+cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3 "owner()" --rpc-url http://localhost:8545
+cast call 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "owner()" --rpc-url http://localhost:8545
+```
+
 ---
 
 ## Environment Setup
