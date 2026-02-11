@@ -178,7 +178,8 @@ anvil --code-size-limit 50000 &
 
 # Deploy all contracts
 cd contracts
-PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+# Use Anvil default account #0 (anvil prints private keys on startup)
+PRIVATE_KEY=$ANVIL_PRIVATE_KEY \
   forge script script/Deploy.s.sol:DeployAll \
   --rpc-url http://localhost:8545 \
   --broadcast \
