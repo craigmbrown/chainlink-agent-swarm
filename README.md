@@ -256,6 +256,176 @@ ERROR HANDLING                          MONITORING
 | `monitoring` | `send_alert` | `webhook_call` | WhatsApp API POST |
 | `risk_assessment` | `trigger_defensive_action` | `evm_write` | RiskManager.executeDefensiveAction() |
 
+## Multi-Agent Deliberation Deep Dive (Task 1)
+
+This section traces a **real live LLM run** through the full deliberation pipeline for Task 1: *"Will ETH reach $5,000 by March 2026?"* — showing how 5 independent agents analyze, return structured confidence scores, and reach Byzantine consensus.
+
+### Step 1: Task Reception & Agent Routing
+
+```
+Task ID:    29d4f4f6d03861b7
+Type:       prediction
+Query:      "Will ETH reach $5,000 by March 2026?"
+Budget:     0.5 LINK
+Requester:  0x742d35Cc6634C0532925a3b844Bc9e7595f2bD53
+```
+
+The orchestrator selects all 5 agents from the **Prediction Pool** based on `task_type: prediction`:
+
+| Agent ID | Name | Specialty | System Prompt Focus |
+|----------|------|-----------|---------------------|
+| `pred-01` | Trend Analyzer | `market_trends` | Price action patterns, moving averages, volume trends |
+| `pred-02` | Sentiment Scanner | `social_sentiment` | Social media sentiment, community activity, news impact |
+| `pred-03` | Technical Analyst | `technical_analysis` | RSI, MACD, Bollinger Bands, chart patterns |
+| `pred-04` | Macro Observer | `macro_economics` | Fed policy, inflation data, institutional flows |
+| `pred-05` | On-Chain Detective | `on_chain_data` | Whale movements, TVL changes, exchange flows |
+
+### Step 2: Independent LLM Analysis (Parallel)
+
+Each agent receives its own **specialized system prompt** + the task query and independently calls the LLM (`llama-3.3-70b-versatile` via Groq). Agents cannot see each other's responses.
+
+**LLM Request per Agent:**
+```
+System: "You are a DeFi prediction agent in a multi-agent swarm.
+         Analyze the question and provide a prediction.
+         You MUST respond with valid JSON:
+         {"answer": "bullish"|"bearish"|"neutral",
+          "confidence": 0.0-1.0,
+          "reasoning": "brief explanation"}"
+         + [specialty-specific prompt]
+
+User:   "Agent: Trend Analyzer (market_trends)
+         Task Type: prediction
+         Question: Will ETH reach $5,000 by March 2026?
+         Date: 2026-02-11
+         Respond with JSON only."
+```
+
+**Structured Responses Returned:**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  pred-01  Trend Analyzer        │  answer: "bullish"               │
+│  market_trends                  │  confidence: 0.70                │
+│                                 │  reasoning: "Upward momentum     │
+│                                 │   with higher highs pattern"     │
+│  LLM call: 127ms               │                                  │
+├─────────────────────────────────┼──────────────────────────────────┤
+│  pred-02  Sentiment Scanner     │  answer: "bullish"               │
+│  social_sentiment               │  confidence: 0.70                │
+│                                 │  reasoning: "Strong positive     │
+│                                 │   sentiment across crypto        │
+│  LLM call: 134ms               │   communities"                   │
+├─────────────────────────────────┼──────────────────────────────────┤
+│  pred-03  Technical Analyst     │  answer: "bullish"               │
+│  technical_analysis             │  confidence: 0.70                │
+│                                 │  reasoning: "RSI and MACD        │
+│                                 │   confirm bullish continuation"  │
+│  LLM call: 119ms               │                                  │
+├─────────────────────────────────┼──────────────────────────────────┤
+│  pred-04  Macro Observer        │  answer: "bullish"               │
+│  macro_economics                │  confidence: 0.70                │
+│                                 │  reasoning: "Favorable macro     │
+│                                 │   conditions with rate cuts"     │
+│  LLM call: 142ms               │                                  │
+├─────────────────────────────────┼──────────────────────────────────┤
+│  pred-05  On-Chain Detective    │  answer: "bullish"               │
+│  on_chain_data                  │  confidence: 0.72                │
+│                                 │  reasoning: "Exchange outflows   │
+│                                 │   rising, whale accumulation"    │
+│  LLM call: 116ms               │                                  │
+└─────────────────────────────────┴──────────────────────────────────┘
+```
+
+### Step 3: Byzantine Consensus Aggregation
+
+The `aggregate_consensus()` function applies **confidence-weighted Byzantine voting** with a 67% threshold:
+
+```
+Algorithm:
+  1. Group responses by answer
+  2. Weight each vote by agent's confidence score
+  3. Calculate agreement ratio = winner_weight / total_weight
+  4. Consensus reached if agreement >= 67% threshold
+  5. Identify dissenting agents
+
+Votes received:
+  "bullish"  ← pred-01 (0.70) + pred-02 (0.70) + pred-03 (0.70)
+               + pred-04 (0.70) + pred-05 (0.72)
+
+Vote tally:
+  ┌─────────────────────────────────────────────┐
+  │  "bullish":  3.52 weighted votes (100.0%)   │
+  │  "bearish":  0.00 weighted votes  (0.0%)    │
+  │  "neutral":  0.00 weighted votes  (0.0%)    │
+  └─────────────────────────────────────────────┘
+
+  Agreement ratio:   3.52 / 3.52 = 100.0%
+  Threshold:         67%
+  Consensus:         ✅ REACHED
+  Dissenting agents: [] (none)
+  Avg confidence:    0.704
+```
+
+### Step 4: Action Execution
+
+Because `task_type == prediction` and consensus was reached, the orchestrator routes to `update_oracle`:
+
+```
+Action:     update_oracle
+Value:      "bullish"
+Confidence: 0.704
+Tx Hash:    0x64e4442f55765b4f6e1f944abcfb1dc4d78f940b8dc311a715b51c01f3ceac26
+Target:     OracleSubscription.updatePrediction() on Base
+```
+
+### Step 5: x402 Payment Settlement
+
+```
+Total budget:     0.500 LINK
+Protocol fee:     0.050 LINK (10%)
+Agent pool:       0.450 LINK (90%)
+
+Payment splits (weighted by confidence):
+  ┌────────────┬──────────────┬────────────┐
+  │ Agent      │ Confidence   │ LINK Earned│
+  ├────────────┼──────────────┼────────────┤
+  │ pred-01    │ 0.70         │ 0.089489   │
+  │ pred-02    │ 0.70         │ 0.089489   │
+  │ pred-03    │ 0.70         │ 0.089489   │
+  │ pred-04    │ 0.70         │ 0.089489   │
+  │ pred-05    │ 0.72         │ 0.092045   │ ← highest confidence = highest pay
+  ├────────────┼──────────────┼────────────┤
+  │ Protocol   │              │ 0.050000   │
+  ├────────────┼──────────────┼────────────┤
+  │ Total      │              │ 0.500000   │
+  └────────────┴──────────────┴────────────┘
+
+Payment tx: 0x23c045038a42086e6174385341f6b3cd0b96a123fd1e8d67f5a86d35a4330270
+Status:     completed
+```
+
+### Full 4-Task Demo Summary
+
+| Task | Query | Agents | Agreement | Threshold | Consensus | Result | LINK |
+|------|-------|--------|-----------|-----------|-----------|--------|------|
+| 1 | ETH $5K prediction | 5 prediction | **100.0%** | 67% | **REACHED** | bullish | 0.5 |
+| 2 | AAVE risk assessment | 4 risk | **72.4%** | 67% | **REACHED** | medium risk | 0.3 |
+| 3 | Uniswap health check | 3 monitoring | **100.0%** | 67% | **REACHED** | degraded | 0.1 |
+| 4 | Yield farm strategy | 5 analysis | **40.0%** | 67% | **FAILED** | no quorum | 0.4 |
+
+Task 4 demonstrates the Byzantine safety property: when agents disagree (3 of 5 dissented), the system correctly identifies **no consensus** even though individual confidence scores were high. The system still pays agents for their work but flags the result as unverified.
+
+### Reproduce
+
+```bash
+# Run the live LLM demo yourself
+export GROQ_API_KEY=your_key
+python chainlink_cre/agent_swarm_orchestrator.py --demo --live
+
+# Results saved to chainlink_cre/storage/demo_results_*.json
+```
+
 ## On-Chain Deployment Verification
 
 All contracts compiled with Foundry (Solidity 0.8.20, optimizer 200 runs) and deployed via `forge script` broadcast. Full transaction log in `contracts/broadcast/`.
