@@ -34,14 +34,22 @@ from enum import Enum
 
 # Path setup
 CRE_DIR = Path(__file__).parent
-PROJECT_ROOT = CRE_DIR.parent.parent.parent
+REPO_ROOT = CRE_DIR.parent
+PROJECT_ROOT = REPO_ROOT.parent  # e.g. /home/user/Project
 sys.path.insert(0, str(CRE_DIR))
 sys.path.insert(0, str(PROJECT_ROOT / "ETAC-System"))
 
-# Load environment
+# Load environment - try multiple .env locations
 try:
     from dotenv import load_dotenv
-    load_dotenv(PROJECT_ROOT / ".env")
+    for env_path in [
+        REPO_ROOT / ".env",           # repo root
+        PROJECT_ROOT / ".env",         # parent dir (Project/)
+        REPO_ROOT.parent.parent / ".env",  # legacy path
+    ]:
+        if env_path.exists():
+            load_dotenv(env_path)
+            break
 except Exception:
     pass
 
